@@ -2,9 +2,19 @@ import axios from "axios";
 
 export default function DeleteModel(props) {
 
+  //note delete method
   const deleteNote = async (noteId) => {
-    await axios.delete(`/api/note/delete?id=${noteId}`).then(() => {
+    await axios.delete(`/api/note/delete?id=${noteId}`)
+    .then((res) => {
+      alert(res.data.message);
       window.location.reload(false);
+    })
+    .catch((error) => {
+      if(error.response.data.error === undefined){
+        alert('Internal error!');
+      } else {
+        alert(error.response.data.error);
+      };
     });
   };
 

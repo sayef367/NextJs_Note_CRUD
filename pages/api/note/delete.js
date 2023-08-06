@@ -9,11 +9,11 @@ export default async function handler(req, res) {
   try {
     const {id} = req.query;
     mongodbConnect();
-    const deleteNote = await Notes.deleteOne({_id: id});
-    res.status(200).json({ status: true, delete: deleteNote });
+    await Notes.deleteOne({ _id: id });
+    res.status(200).json({ message: 'Note is successfully deleted.' });
 
   } catch (error) {
-    res.status(500).json({error: 'Note not Deleted!'});
+    res.status(500).json({ error: 'Note not Deleted!' });
     
   };
 };

@@ -2,15 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function NewNote() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [noteObj, setNoteObj] = useState({
+    title: '',
+    content: '',
+  });
 
   //note data send the server
   const handleSubmit = async () => {
-    const noteObj = {
-      title: title,
-      content: content,
-    };
     await axios.post('/api/note/post', noteObj)
     .then((res) => {
       alert(res.data.message);
@@ -36,7 +34,7 @@ export default function NewNote() {
             <form onSubmit={handleSubmit}>
               <div className="form-floating mb-3 fw-light">
                 <input 
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => setNoteObj({...noteObj, title: e.target.value})}
                   className="form-control" 
                   placeholder="Write Title"
                   type="text"
@@ -46,7 +44,7 @@ export default function NewNote() {
               </div>
               <div className="form-floating mb-3 fw-light">
                 <textarea 
-                  onChange={(e) => setContent(e.target.value)}
+                  onChange={(e) => setNoteObj({...noteObj, content: e.target.value})}
                   className="form-control" 
                   style={{ height: '150px' }} 
                   placeholder="Leave a comment here" 
@@ -56,7 +54,7 @@ export default function NewNote() {
                 <label>Write Note</label>
               </div>
               <div className="d-grid gap-2">
-                <button type="submit" className="btn btn-dark">Submit</button>
+                <button type="submit" className="btn btn-dark">Save Note</button>
               </div>
             </form>
           </div>

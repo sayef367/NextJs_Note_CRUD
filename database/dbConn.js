@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 export default async function mongodbConnect() {
   try {
-    // mongoose.set("strictQuery", false);
-    // Connect to the MongoDB cluster
+    // Connect to the MongoDB 
     await mongoose.connect('mongodb://127.0.0.1:27017/nextjsNoteCRUD', { 
       useNewUrlParser: true,
       useUnifiedTopology: true,

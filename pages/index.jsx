@@ -13,6 +13,7 @@ export default function Notes() {
   const [fetchData, setFetchData] = useState([]);
   const [searchData, setSearchData] = useState([]);
   const [api, setApi] = useState(true);
+  const [empty, setEmpty] = useState(false);
 
   //get data from server
   useEffect(() => {
@@ -20,6 +21,7 @@ export default function Notes() {
       setApi(false);
       await axios.get('/api/note/get').then(function (res) {
         setFetchData(res.data);
+        setEmpty(res.data.length == 0);
       })
       .catch((error) => {
         if(error.response.data.error === undefined){
@@ -32,6 +34,7 @@ export default function Notes() {
     };
     getNotes();
   },[]);
+  //search note
   const handleFilter = (e) => {
     const searchWord = e.target.value;
     const newFilter = fetchData.filter((value) => {
@@ -71,15 +74,15 @@ if(api===false) {
       <NoteTop handleFilter={handleFilter}/>
 
       {/* <h1 className="text-center mt-2 mb-4">Note List - {fetchData.length}</h1> */}
-      <div className="row mt-4">
-        { 
+      <div className="row mt-4 justify-content-md-center">
+        {
           (searchData == '' ? fetchData : searchData).map((note) => {
           return (
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={note._id} >
-              <div className="card divHover" 
+              <div className="card shadow" 
                 onClick={(title, content, noteId) => editForm(note.title, note.content, note._id)} 
                 data-bs-toggle="modal" data-bs-target="#exampleModalView">
-                <div className="card-body" >
+                <div className="card-body bg-body-secondary">
                   <h6 className="card-title">{note.title.slice(0, 34)}</h6>
                   <hr />
                   <p className="card-text textSize">{note.content.slice(0, 37)}</p>
@@ -100,6 +103,8 @@ if(api===false) {
             </div>
           )})
         }
+        {/* if note is empty */}
+        {(empty === true) ? <p className="text-center">Empty Note</p> : ''}
 
         {/* View modal */}
         <ViewModel title={title} content={content}/>
@@ -145,8 +150,13 @@ if(api===false) {
             </div>
           </div>
         </div>
-
       </div>
+
+      {/* Footer bar */}
+      <div className="container bg-body-secondary rounded-3  fixed-bottom">
+        <p className="text-center pt-3">© 2023 All Rights Reserved. Developed by Md Sayeful Islam</p>
+      </div>
+
     </div>
   )};
 };
